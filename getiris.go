@@ -28,7 +28,6 @@ func Iris() [][]float64 {
 	reader := csv.NewReader(transform.NewReader(file1, japanese.ShiftJIS.NewDecoder()))
 	reader.LazyQuotes = true // ダブルクオートを厳密にチェックしない
 
-	log.Printf("Start")
 	for {
 		record, err := reader.Read() // 1行読み出す
 		x = []float64{}
@@ -37,19 +36,23 @@ func Iris() [][]float64 {
 		} else {
 			failOnError(err)
 		}
-
+		flag := 0
 		for i, v := range record {
-			if i > 0 {
-				if len(v) < 10 {
-					f64, _ := strconv.ParseFloat(v, 64)
-					x = append(x, f64)
-				} else {
-					x = append(x, t[v])
+
+			if i != 4 {
+				f64, _ := strconv.ParseFloat(v, 64)
+				x = append(x, f64)
+			} else {
+				if t[v] == 0 {
+					flag = 1
 				}
+				x = append(x, t[v])
 			}
+
 		}
-		y = append(y, x)
+		if flag != 1 {
+			y = append(y, x)
+		}
 	}
-	log.Printf("Finish !")
 	return y
 }
