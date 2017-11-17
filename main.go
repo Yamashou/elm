@@ -32,7 +32,7 @@ func main() {
 	k := 0
 	for _, v := range train {
 		for _, vv := range v {
-			if k != 4 {
+			if k != 3 {
 				trainX = append(trainX, vv)
 				k++
 			} else {
@@ -44,7 +44,7 @@ func main() {
 	k = 0
 	for _, v := range test {
 		for _, vv := range v {
-			if k != 4 {
+			if k != 3 {
 				testX = append(testX, vv)
 				k++
 			} else {
@@ -54,10 +54,10 @@ func main() {
 		}
 	}
 	var data mat.Dense
-	t := addBias(trainX, len(trainX)/4, 4)
-	xArray := mat.NewDense(len(t)/5, 5, t)
+	t := addBias(trainX, len(trainX)/3, 3)
+	xArray := mat.NewDense(len(t)/4, 4, t)
 	yArray := mat.NewDense(len(trainY), 1, trainY)
-	rundArray := getRundomArray(10, 5)
+	rundArray := getRundomArray(10, 4)
 	elm := ELM{}
 	elm.W = *rundArray
 	H := elm.getWeightMatrix(*xArray)
@@ -65,15 +65,16 @@ func main() {
 	elm.Data = data
 	fm := mat.Formatted(&data, mat.Prefix("    "), mat.Squeeze())
 	fmt.Printf("m = %4.2f", fm)
-	// var data2 mat.Dense
-	// var data3 mat.Dense
-	// t2 := addBias(testX, len(testX)/4, 4)
-	// xArray2 := mat.NewDense(len(t2)/5, 5, t2)
-	// data2.Mul(xArray2, elm.W.T())
-	// fmt.Println(data2.Caps())
-	// data3.Mul(&data2, &data)
-	// fmm := mat.Formatted(&data3, mat.Prefix("    "), mat.Squeeze())
-	// fmt.Printf("m = %4.2f", fmm)
+	var data2 mat.Dense
+	var data4 mat.Dense
+	t2 := addBias(testX, len(testX)/3, 3)
+	xArray2 := mat.NewDense(len(t2)/4, 4, t2)
+	data2.Mul(xArray2, elm.W.T())
+	fmt.Println(data2.Caps())
+	H2 := elm.getWeightMatrix(*xArray2)
+	data4.Mul(&H2, &data)
+	fmm := mat.Formatted(&data4, mat.Prefix("    "), mat.Squeeze())
+	fmt.Printf("m = %4.2f", fmm)
 }
 
 func (e ELM) getWeightMatrix(X mat.Dense) mat.Dense {
