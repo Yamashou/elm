@@ -1,7 +1,7 @@
 package main
 
 import (
-	"fmt"
+	"math/rand"
 
 	"gonum.org/v1/gonum/mat"
 )
@@ -23,31 +23,10 @@ type DataSet struct {
 
 func main() {
 	X := Iris()
-	var train [][]float64
-	var test [][]float64
-	for i, v := range X {
-		if i%3 == 2 {
-			test = append(test, v)
-		} else {
-			train = append(train, v)
-		}
-	}
-	var trainingDataSet DataSet
-	var testDataSet DataSet
-	trainingDataSet.Data = train
-	trainingDataSet.XSize = 4
-	trainingDataSet.YSize = 1
-
-	testDataSet.Data = test
-	testDataSet.XSize = 4
-	testDataSet.YSize = 1
-
-	trainingDataSet.dataSplit()
-	testDataSet.dataSplit()
+	trainingDataSet, testDataSet := TrainTestSplit(X, 0.4, 4, 1)
 	elm := ELM{}
 	elm.Fit(&trainingDataSet, 10)
 	elm.Score(&testDataSet)
-
 }
 
 func (d *DataSet) dataSplit() {
@@ -69,31 +48,66 @@ func (d *DataSet) isData(k int) bool {
 	return 0 <= k && k < d.XSize
 }
 
+func (d *DataSet) Set(data [][]float64, xSize, ySize int) {
+	d.Data = data
+	d.XSize = xSize
+	d.YSize = ySize
+}
+
+func TrainTestSplit(d [][]float64, p float64, x, y int) (DataSet, DataSet) {
+	var train [][]float64
+	var test [][]float64
+	for i := 0; i < len(d)-1; i++ {
+		t := rand.Intn(len(d)-i) + i
+		tmp := d[t]
+		d[t] = d[i]
+		d[i] = tmp
+	}
+	n := int(float64(len(d)) * (1 - p))
+	for i, v := range d {
+		if i < n {
+			train = append(train, v)
+		} else {
+			test = append(test, v)
+		}
+	}
+	var trainingDataSet DataSet
+	var testDataSet DataSet
+	trainingDataSet.Set(train, x, y)
+	testDataSet.Set(test, x, y)
+
+	trainingDataSet.dataSplit()
+	testDataSet.dataSplit()
+	return trainingDataSet, testDataSet
+}
+
 func (e *ELM) Fit(d *DataSet, hidNum int) {
 	var data mat.Dense
-	dataSize := d.XSize
 
-	t := addBias(d.X, len(d.X)/dataSize, dataSize)
-	fmt.Println(dataSize)
-	xArray := mat.NewDense(len(t)/(dataSize+1), dataSize+1, t)
-	rundArray := getRundomArray(hidNum, dataSize+1)
+	xArray := e.getAddBiasArray(d)
+	rundArray := getRundomArray(hidNum, d.XSize+1)
 	yArray := mat.NewDense(len(d.Y), d.YSize, d.Y)
-
 	e.W = *rundArray
+
 	H := e.getWeightMatrix(*xArray)
 	data.Mul(H.T(), yArray)
 	e.Beta = data
 }
 
 func (e *ELM) Score(d *DataSet) {
-	var data2 mat.Dense
-	dataSize := d.XSize
-	tt := addBias(d.X, len(d.X)/dataSize, dataSize)
-	testArray := mat.NewDense(len(tt)/(dataSize+1), dataSize+1, tt)
-	data2.Mul(&e.W, testArray.T())
+	var data mat.Dense
 
-	gData := setSigmoid(data2)
-	var data3 mat.Dense
-	data3.Mul(gData.T(), &e.Beta)
-	evaluationCheck(data3, d.Y)
+	testArray := e.getAddBiasArray(d)
+	data.Mul(&e.W, testArray.T())
+
+	gData := setSigmoid(data)
+	var data2 mat.Dense
+	data2.Mul(gData.T(), &e.Beta)
+	evaluationCheck(data2, d.Y)
+}
+
+func (e *ELM) getAddBiasArray(d *DataSet) *mat.Dense {
+	dataSize := d.XSize
+	t := addBias(d.X, len(d.X)/dataSize, dataSize)
+	return mat.NewDense(len(t)/(dataSize+1), dataSize+1, t)
 }
