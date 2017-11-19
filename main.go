@@ -7,8 +7,10 @@ import (
 )
 
 type ELM struct {
-	W    mat.Dense
-	Data mat.Dense
+	W     mat.Dense
+	Beta  mat.Dense
+	Train DataSet
+	Test  DataSet
 }
 
 type DataSet struct {
@@ -42,27 +44,10 @@ func main() {
 
 	trainingDataSet.dataSplit()
 	testDataSet.dataSplit()
-
-	var data mat.Dense
-	t := addBias(trainingDataSet.X, len(trainingDataSet.X)/4, 4)
-	xArray := mat.NewDense(len(t)/5, 5, t)
-	yArray := mat.NewDense(len(trainingDataSet.Y), 1, trainingDataSet.Y)
-	rundArray := getRundomArray(10, 5)
 	elm := ELM{}
-	elm.W = *rundArray
-	H := elm.getWeightMatrix(*xArray)
-	data.Mul(H.T(), yArray)
-	elm.Data = data
-	fm := mat.Formatted(&data, mat.Prefix("    "), mat.Squeeze())
-	fmt.Printf("β = %4.2f\n", fm)
-	var data2 mat.Dense
-	tt := addBias(testDataSet.X, len(testDataSet.X)/4, 4)
-	testArray := mat.NewDense(len(tt)/5, 5, tt)
-	data2.Mul(rundArray, testArray.T())
-	gData := setSigmoid(data2)
-	var data3 mat.Dense
-	data3.Mul(gData.T(), &data)
-	evaluationCheck(data3, testDataSet.Y)
+	elm.Fit(&trainingDataSet, 10)
+	elm.Score(&testDataSet)
+
 }
 
 func (d *DataSet) dataSplit() {
@@ -82,4 +67,33 @@ func (d *DataSet) dataSplit() {
 
 func (d *DataSet) isData(k int) bool {
 	return 0 <= k && k < d.XSize
+}
+
+func (e *ELM) Fit(d *DataSet, hidNum int) {
+	var data mat.Dense
+	dataSize := d.XSize
+
+	t := addBias(d.X, len(d.X)/dataSize, dataSize)
+	fmt.Println(dataSize)
+	xArray := mat.NewDense(len(t)/(dataSize+1), dataSize+1, t)
+	rundArray := getRundomArray(hidNum, dataSize+1)
+	yArray := mat.NewDense(len(d.Y), d.YSize, d.Y)
+
+	e.W = *rundArray
+	H := e.getWeightMatrix(*xArray)
+	data.Mul(H.T(), yArray)
+	e.Beta = data
+}
+
+func (e *ELM) Score(d *DataSet) {
+	var data2 mat.Dense
+	dataSize := d.XSize
+	tt := addBias(d.X, len(d.X)/dataSize, dataSize)
+	testArray := mat.NewDense(len(tt)/(dataSize+1), dataSize+1, tt)
+	data2.Mul(&e.W, testArray.T())
+
+	gData := setSigmoid(data2)
+	var data3 mat.Dense
+	data3.Mul(gData.T(), &e.Beta)
+	evaluationCheck(data3, d.Y)
 }
