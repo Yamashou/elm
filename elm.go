@@ -1,4 +1,4 @@
-package main
+package elm
 
 import (
 	"math/rand"

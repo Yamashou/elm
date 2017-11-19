@@ -1,4 +1,4 @@
-package main
+package elm
 
 type DataSet struct {
 	Data  [][]float64
