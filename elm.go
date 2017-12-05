@@ -33,7 +33,7 @@ func (e *ELM) Fit(d *DataSet, hidNum int) {
 	e.Beta = data
 }
 
-func (e *ELM) Score(d *DataSet) {
+func (e *ELM) Score(d *DataSet) float64 {
 	var data mat.Dense
 
 	testArray := e.getAddBiasArray(d)
@@ -42,7 +42,7 @@ func (e *ELM) Score(d *DataSet) {
 	gData := setSigmoid(data)
 	var data2 mat.Dense
 	data2.Mul(gData.T(), &e.Beta)
-	evaluationCheck(data2, d.Y)
+	return evaluationCheck(data2, d.Y)
 }
 
 func (e *ELM) getAddBiasArray(d *DataSet) *mat.Dense {

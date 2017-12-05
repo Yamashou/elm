@@ -1,12 +1,10 @@
 package elm
 
 import (
-	"fmt"
-
 	"gonum.org/v1/gonum/mat"
 )
 
-func evaluationCheck(X mat.Dense, y []float64) {
+func evaluationCheck(X mat.Dense, y []float64) float64 {
 	n, m := X.Caps()
 	x := make([][]float64, n*m)
 	count := float64(n)
@@ -33,5 +31,5 @@ func evaluationCheck(X mat.Dense, y []float64) {
 			k++
 		}
 	}
-	fmt.Println(count / float64(len(y)/m))
+	return count / float64(len(y)/m)
 }
