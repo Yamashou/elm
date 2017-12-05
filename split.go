@@ -1,16 +1,9 @@
 package elm
 
-import "math/rand"
-
 func TrainTestSplit(d [][]float64, p float64, x, y int) (DataSet, DataSet) {
 	var train [][]float64
 	var test [][]float64
-	for i := 0; i < len(d)-1; i++ {
-		t := rand.Intn(len(d)-i) + i
-		tmp := d[t]
-		d[t] = d[i]
-		d[i] = tmp
-	}
+	d = mixData(d)
 	n := int(float64(len(d)) * (1 - p))
 	for i, v := range d {
 		if i < n {
