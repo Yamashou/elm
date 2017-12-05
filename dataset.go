@@ -14,12 +14,12 @@ func (d *DataSet) dataSplit() {
 		for _, vv := range v {
 			if d.isData(k) {
 				d.X = append(d.X, vv)
-				k++
 			} else {
 				d.Y = append(d.Y, vv)
-				k = 0
 			}
+			k++
 		}
+		k = 0
 	}
 }
 

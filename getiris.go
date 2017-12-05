@@ -39,15 +39,25 @@ func Iris() [][]float64 {
 		}
 		flag := 0
 		for i, v := range record {
-
 			if i != 4 {
 				f64, _ := strconv.ParseFloat(v, 64)
 				x = append(x, f64)
 			} else {
+				ans := make([]float64, 3)
 				if t[v] == 0 {
-					flag = 1
+					ans[0] = 1
+					ans[1] = -1
+					ans[2] = -1
+				} else if t[v] == 1 {
+					ans[0] = -1
+					ans[1] = 1
+					ans[2] = -1
+				} else {
+					ans[0] = -1
+					ans[1] = -1
+					ans[2] = 1
 				}
-				x = append(x, t[v])
+				x = append(x, ans...)
 			}
 
 		}

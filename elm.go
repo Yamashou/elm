@@ -25,7 +25,7 @@ func (e *ELM) Fit(d *DataSet, hidNum int) {
 
 	xArray := e.getAddBiasArray(d)
 	rundArray := getRundomArray(hidNum, d.XSize+1)
-	yArray := mat.NewDense(len(d.Y), d.YSize, d.Y)
+	yArray := mat.NewDense(len(d.Y)/d.YSize, d.YSize, d.Y)
 	e.W = *rundArray
 
 	H := e.getWeightMatrix(*xArray)
