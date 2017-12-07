@@ -8,10 +8,8 @@ import (
 )
 
 type ELM struct {
-	W     mat.Dense
-	Beta  mat.Dense
-	Train DataSet
-	Test  DataSet
+	W    mat.Dense
+	Beta mat.Dense
 }
 
 func (e *ELM) getWeightMatrix(X mat.Dense) mat.Dense {
