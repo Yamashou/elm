@@ -12,5 +12,5 @@ func main() {
 	e := elm.ELM{}
 	e.Fit(&trainingDataSet, 10)
 	fmt.Println(e.Score(&testDataSet))
-	elm.CrossValidation(X, 3, 4, 3, 10)
+
 }
