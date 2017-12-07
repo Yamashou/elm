@@ -2,7 +2,7 @@ package elm
 
 import "fmt"
 
-func CrossValidation(d [][]float64, n, x, y int) {
+func CrossValidation(d [][]float64, n, x, y, m int) {
 	data := make([][][]float64, n)
 	d = mixData(d)
 	for i, v := range d {
@@ -27,7 +27,7 @@ func CrossValidation(d [][]float64, n, x, y int) {
 
 		trainingDataSet.dataSplit()
 		testDataSet.dataSplit()
-		e.Fit(&trainingDataSet, 10)
+		e.Fit(&trainingDataSet, m)
 		count += e.Score(&testDataSet)
 	}
 	fmt.Println(count / float64(n))
