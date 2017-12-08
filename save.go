@@ -20,3 +20,15 @@ func (e ELM) MarshalBinaryTo(name string) (int, error) {
 	}
 	return n1 + n2, nil
 }
+
+func (e ELM) MarshalBinary() ([]byte, []byte, error) {
+	w, err := e.W.MarshalBinary()
+	if err != nil {
+		return nil, nil, err
+	}
+	beta, err := e.Beta.MarshalBinary()
+	if err != nil {
+		return nil, nil, err
+	}
+	return w, beta, nil
+}

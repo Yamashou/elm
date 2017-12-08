@@ -28,7 +28,7 @@ func PlotPng(X [][]float64, name string) {
 	if err != nil {
 		panic(err)
 	}
-	p.Title.Text = "Face"
+	p.Title.Text = "ELM"
 	p.X.Label.Text = "Hidden neurons"
 	p.Y.Label.Text = "percent"
 
