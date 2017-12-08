@@ -66,8 +66,7 @@ func GetPage(url string) []string {
 	return images
 }
 
-func GetImgPathToFeaturVector(urls []string, ans []float64) [][]float64 {
-	var X [][]float64
+func GetImgPathToFeaturVector(X [][]float64, urls []string, ans []float64) [][]float64 {
 	for _, v := range urls {
 		response, err := http.Get(v)
 		if err != nil {
