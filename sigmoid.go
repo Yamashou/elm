@@ -6,7 +6,7 @@ import (
 	"gonum.org/v1/gonum/mat"
 )
 
-func setSigmoid(x mat.Dense) *mat.Dense {
+func SetSigmoid(x mat.Dense) *mat.Dense {
 	var v float64
 	n, m := x.Caps()
 	k := 0

@@ -5,9 +5,9 @@ import (
 )
 
 func (e ELM) MarshalBinaryTo(name string) (int, error) {
-	v1, _ := os.Create("iris_w_" + name)
+	v1, _ := os.Create("w_" + name)
 	defer v1.Close()
-	v2, _ := os.Create("iris_beta_" + name)
+	v2, _ := os.Create("beta_" + name)
 	defer v2.Close()
 
 	n1, err := e.W.MarshalBinaryTo(v1)
