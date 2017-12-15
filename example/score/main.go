@@ -12,5 +12,6 @@ func main() {
 	e := elm.ELM{}
 	e.Fit(&trainingDataSet, 10)
 	fmt.Println(e.Score(&testDataSet))
+	fmt.Println(e.W.Caps())
 
 }

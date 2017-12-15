@@ -49,6 +49,24 @@ func (e *ELM) GetAddBiasArray(d *DataSet) *mat.Dense {
 	return mat.NewDense(len(t)/(dataSize+1), dataSize+1, t)
 }
 
+func (e *ELM) GetResult(d []float64) int {
+	d = append(d, 1)
+	vec := mat.NewDense(1, len(d), d)
+	gData := SetSigmoid(*vec)
+	var X mat.Dense
+	X.Mul(gData.T(), &e.Beta)
+
+	n, m := X.Caps()
+	for i := 0; i < n; i++ {
+		for j := 0; j < m; j++ {
+			if X.At(i, j) > 0 {
+				return j
+			}
+		}
+	}
+	return -1
+}
+
 func getRundomArray(n, m int) *mat.Dense {
 	data := make([]float64, n*m)
 	for i := range data {
