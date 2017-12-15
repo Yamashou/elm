@@ -38,9 +38,9 @@ func (e *ELM) Score(d *DataSet) float64 {
 	data.Mul(&e.W, testArray.T())
 
 	gData := SetSigmoid(data)
-	var data2 mat.Dense
-	data2.Mul(gData.T(), &e.Beta)
-	return evaluationCheck(data2, d.Y)
+	var result mat.Dense
+	result.Mul(gData.T(), &e.Beta)
+	return evaluationCheck(result, d.Y)
 }
 
 func (e *ELM) GetAddBiasArray(d *DataSet) *mat.Dense {
@@ -52,9 +52,9 @@ func (e *ELM) GetAddBiasArray(d *DataSet) *mat.Dense {
 func (e *ELM) GetResult(d []float64) int {
 	d = append(d, 1)
 	vec := mat.NewDense(1, len(d), d)
-	var data2 mat.Dense
-	data2.Mul(&e.W, vec.T())
-	gData := SetSigmoid(data2)
+	var hneuron mat.Dense
+	hneuron.Mul(&e.W, vec.T())
+	gData := SetSigmoid(hneuron)
 	var X mat.Dense
 	X.Mul(gData.T(), &e.Beta)
 
