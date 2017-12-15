@@ -22,7 +22,7 @@ func Iris() [][]float64 {
 	var y [][]float64
 	t := map[string]float64{"Iris-setosa": 1.0, "Iris-versicolor": -1.0, "Iris-virginica": 0.0}
 	path := os.Getenv("GOPATH")
-	file1, err := os.Open(path + "/src/github.com/sjwhitworth/golearn/examples/datasets/iris.csv")
+	file1, err := os.Open(path + "/src/github.com/Yamashou/elm/data/iris.csv")
 	failOnError(err)
 	defer file1.Close()
 
