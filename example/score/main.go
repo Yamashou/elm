@@ -12,6 +12,6 @@ func main() {
 	e := elm.ELM{}
 	e.Fit(&trainingDataSet, 10)
 	fmt.Println(e.Score(&testDataSet))
-	fmt.Println(e.W.Caps())
+	fmt.Println(e.GetResult([]float64{7.0, 3.2, 4.7, 1.4})) // -> 2
 
 }

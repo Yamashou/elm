@@ -52,7 +52,9 @@ func (e *ELM) GetAddBiasArray(d *DataSet) *mat.Dense {
 func (e *ELM) GetResult(d []float64) int {
 	d = append(d, 1)
 	vec := mat.NewDense(1, len(d), d)
-	gData := SetSigmoid(*vec)
+	var data2 mat.Dense
+	data2.Mul(&e.W, vec.T())
+	gData := SetSigmoid(data2)
 	var X mat.Dense
 	X.Mul(gData.T(), &e.Beta)
 
