@@ -12,6 +12,7 @@ import (
 	"github.com/kelvins/lbph/lbp"
 )
 
+//GetCharacteristic converts LBH to feature vector, p: LBH
 func GetCharacteristic(p [][]uint64) []float64 {
 	x := make([]float64, 256)
 	for i := 0; i < len(x); i++ {
@@ -25,6 +26,7 @@ func GetCharacteristic(p [][]uint64) []float64 {
 	return x
 }
 
+//GetLBH gets LBH from image data, m: Black and white image
 func GetLBH(m image.Image) [][]uint64 {
 	params := lbph.Params{
 		Radius:    1,
@@ -40,6 +42,7 @@ func GetLBH(m image.Image) [][]uint64 {
 	return pixels
 }
 
+//GetLocalImgPathToFeaturVector obtains feature vector from image data
 func GetLocalImgPathToFeaturVector(paths []string, X [][]float64, ans []float64, max int) [][]float64 {
 	for i, v := range paths {
 		file, err := imaging.Open(v)
@@ -56,6 +59,7 @@ func GetLocalImgPathToFeaturVector(paths []string, X [][]float64, ans []float64,
 	return X
 }
 
+//GetPage will get all the url of the url destination image
 func GetPage(url string) []string {
 	var images []string
 	doc, _ := goquery.NewDocument(url)
@@ -66,6 +70,7 @@ func GetPage(url string) []string {
 	return images
 }
 
+//GetImgPathToFeaturVector makes all images of url a feature vector
 func GetImgPathToFeaturVector(X [][]float64, urls []string, ans []float64) [][]float64 {
 	for _, v := range urls {
 		response, err := http.Get(v)
@@ -84,6 +89,7 @@ func GetImgPathToFeaturVector(X [][]float64, urls []string, ans []float64) [][]f
 	return X
 }
 
+//Dirwalk gets the path of all the files in the directory.
 func Dirwalk(dir string) []string {
 	files, err := ioutil.ReadDir(dir)
 	if err != nil {

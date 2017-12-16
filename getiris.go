@@ -17,6 +17,7 @@ func failOnError(err error) {
 	}
 }
 
+// Iris get test data
 func Iris() [][]float64 {
 	var x []float64
 	var y [][]float64
