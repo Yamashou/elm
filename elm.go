@@ -7,6 +7,7 @@ import (
 	"gonum.org/v1/gonum/mat"
 )
 
+// ELM is a learning model type
 type ELM struct {
 	W    mat.Dense
 	Beta mat.Dense
@@ -18,6 +19,7 @@ func (e *ELM) getWeightMatrix(X mat.Dense) mat.Dense {
 	return mpinverse.NewMPInverse(SetSigmoid(b))
 }
 
+// Fit is a learning function, d: Learning data, hidNum: Hidden neurons
 func (e *ELM) Fit(d *DataSet, hidNum int) {
 	var data mat.Dense
 
@@ -31,6 +33,7 @@ func (e *ELM) Fit(d *DataSet, hidNum int) {
 	e.Beta = data
 }
 
+//Score returns the accuracy of the model, d: Test data
 func (e *ELM) Score(d *DataSet) float64 {
 	var data mat.Dense
 
@@ -43,12 +46,14 @@ func (e *ELM) Score(d *DataSet) float64 {
 	return evaluationCheck(result, d.Y)
 }
 
+//GetAddBiasArray adds bias to data, d: data(learning, test, etc...)
 func (e *ELM) GetAddBiasArray(d *DataSet) *mat.Dense {
 	dataSize := d.XSize
 	t := addBias(d.X, len(d.X)/dataSize, dataSize)
 	return mat.NewDense(len(t)/(dataSize+1), dataSize+1, t)
 }
 
+// GetResult returns the evaluation result on certain data, d: feature vector
 func (e *ELM) GetResult(d []float64) int {
 	d = append(d, 1)
 	vec := mat.NewDense(1, len(d), d)
