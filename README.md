@@ -5,6 +5,7 @@ For explanation of ELM please refer [here](http://www.ntu.edu.sg/home/egbhuang/)
 
 # Example
 This example does three classifications of iris.
+Thist is most simple example.
 
 ```go
 package main
