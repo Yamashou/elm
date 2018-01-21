@@ -2,6 +2,7 @@ package elm
 
 import (
 	"io"
+	"os"
 
 	"gonum.org/v1/gonum/mat"
 )
@@ -20,6 +21,22 @@ func UnmarshalBinaryFrom(w, b io.Reader) (ELM, error) {
 	}
 
 	return ELM{W, Beta}, nil
+}
+
+func UnmarshalBinaryFromName(name string) (ELM, error) {
+	w, err := os.Open("./w_" + name)
+	if err != nil {
+		return ELM{}, err
+	}
+	defer w.Close()
+
+	b, err := os.Open("./beta_" + name)
+	if err != nil {
+		return ELM{}, err
+	}
+	defer b.Close()
+
+	return UnmarshalBinaryFrom(w, b)
 }
 
 func UnmarshalBinary(w, b []byte) (ELM, error) {
