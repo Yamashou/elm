@@ -1,5 +1,7 @@
 package elm
 
+import "errors"
+
 type DataSet struct {
 	Data  [][]float64
 	X     []float64
@@ -31,4 +33,16 @@ func (d *DataSet) Set(data [][]float64, xSize, ySize int) {
 	d.Data = data
 	d.XSize = xSize
 	d.YSize = ySize
+}
+
+func NewDataSet(data [][]float64, x, y int) (DataSet, error) {
+	var d DataSet
+	if len(data[0]) != x+y {
+		return d, errors.New("no much length")
+	}
+	d.Set(data, x, y)
+	d.Set(data, x, y)
+	d.dataSplit()
+
+	return d, nil
 }
