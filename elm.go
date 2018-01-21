@@ -25,7 +25,7 @@ func (e *ELM) Fit(d *DataSet, hidNum int) {
 	var data mat.Dense
 
 	xArray := e.GetAddBiasArray(d)
-	rundArray := getRundomArray(hidNum, d.XSize+1)
+	rundArray := getRundomArray(hidNum, d.XSize+1, time.Now().UnixNano())
 	yArray := mat.NewDense(len(d.Y)/d.YSize, d.YSize, d.Y)
 	e.W = *rundArray
 
@@ -75,9 +75,9 @@ func (e *ELM) GetResult(d []float64) int {
 	return -1
 }
 
-func getRundomArray(n, m int) *mat.Dense {
+func getRundomArray(n, m int, seed int64) *mat.Dense {
 	data := make([]float64, n*m)
-	floadRand := rand.New(rand.NewSource(time.Now().UnixNano()))
+	floadRand := rand.New(rand.NewSource(seed))
 	for i := range data {
 		data[i] = floadRand.NormFloat64() / 10
 	}
