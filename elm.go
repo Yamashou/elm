@@ -2,6 +2,7 @@ package elm
 
 import (
 	"math/rand"
+	"time"
 
 	"github.com/Yamashou/mpinverse"
 	"gonum.org/v1/gonum/mat"
@@ -76,8 +77,9 @@ func (e *ELM) GetResult(d []float64) int {
 
 func getRundomArray(n, m int) *mat.Dense {
 	data := make([]float64, n*m)
+	floadRand := rand.New(rand.NewSource(time.Now().UnixNano()))
 	for i := range data {
-		data[i] = rand.NormFloat64() / 10
+		data[i] = floadRand.NormFloat64() / 10
 	}
 	return mat.NewDense(n, m, data)
 }
