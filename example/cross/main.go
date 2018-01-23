@@ -8,5 +8,5 @@ import (
 
 func main() {
 	X := elm.Iris()
-	fmt.Println(elm.CrossValidation(X, 3, 4, 3, 10))
+	fmt.Println(elm.CrossValidation(X, 3, 4, 3, 10, 0))
 }

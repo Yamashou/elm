@@ -21,17 +21,21 @@ func (e *ELM) getWeightMatrix(X mat.Dense) mat.Dense {
 }
 
 // Fit is a learning function, d: Learning data, hidNum: Hidden neurons
-func (e *ELM) Fit(d *DataSet, hidNum int) {
+func (e *ELM) Fit(d *DataSet, hidNum int, seed int64) int64 {
 	var data mat.Dense
 
 	xArray := e.GetAddBiasArray(d)
-	rundArray := getRundomArray(hidNum, d.XSize+1, time.Now().UnixNano())
+	if seed == 0 {
+		seed = time.Now().UnixNano()
+	}
+	rundArray := getRundomArray(hidNum, d.XSize+1, seed)
 	yArray := mat.NewDense(len(d.Y)/d.YSize, d.YSize, d.Y)
 	e.W = *rundArray
 
 	H := e.getWeightMatrix(*xArray)
 	data.Mul(H.T(), yArray)
 	e.Beta = data
+	return seed
 }
 
 //Score returns the accuracy of the model, d: Test data

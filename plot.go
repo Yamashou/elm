@@ -21,7 +21,7 @@ func PlotPng(X [][]float64, name string) {
 	h := []int{5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
 	ans := make([]float64, len(h))
 	for i, v := range h {
-		ans[i] = CrossValidation(X, 3, 256, 1, v)
+		ans[i] = CrossValidation(X, 3, 256, 1, v, 0)
 	}
 
 	p, err := plot.New()

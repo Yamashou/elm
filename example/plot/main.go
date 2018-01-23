@@ -15,7 +15,7 @@ func main() {
 	h := []int{5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100}
 	ans := make([]float64, len(h))
 	for i, v := range h {
-		ans[i] = elm.CrossValidation(X, 3, 4, 3, v)
+		ans[i] = elm.CrossValidation(X, 3, 4, 3, v, 0)
 	}
 
 	p, err := plot.New()
